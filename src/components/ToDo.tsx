@@ -4,6 +4,16 @@ import { Categories, IToDo, toDoState } from "../atoms";
 
 function ToDo({ text, category, id }: IToDo) {
   const setToDos = useSetRecoilState(toDoState);
+  const onDelete = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setToDos((oldToDos) => {
+      const targetIndex = oldToDos.findIndex((element) => element.id === id);
+
+      return [
+        ...oldToDos.slice(0, targetIndex),
+        ...oldToDos.slice(targetIndex + 1),
+      ];
+    });
+  };
   const onClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     const {
       currentTarget: { name },
@@ -37,6 +47,7 @@ function ToDo({ text, category, id }: IToDo) {
           Done
         </button>
       )}
+      <button onClick={onDelete}>Delete</button>
     </li>
   );
 }
